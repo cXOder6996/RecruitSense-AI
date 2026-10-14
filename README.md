@@ -425,38 +425,10 @@ This project is developed as a **Final Year Project** for academic purposes.
 
 ---
 
-## 👥 Contributors
-
-<table>
-  <tr>
-    <td align="center">
-      <a href="https://github.com/cXOder6996">
-        <img src="https://github.com/cXOder6996.png" width="100px;" alt="Krish Gupta"/><br />
-        <sub><b>Krish Gupta</b></sub>
-      </a><br />
-      <sub>Lead Developer · ML Integration · System Architecture</sub>
-    </td>
-    <td align="center">
-      <a href="https://github.com/Abhay-Raj-Yadav">
-        <img src="https://github.com/Abhay-Raj-Yadav.png" width="100px;" alt="Abhay Raj Yadav"/><br />
-        <sub><b>Abhay Raj Yadav</b></sub>
-      </a><br />
-      <sub>Core Platform · Interview Flow · UI Foundation</sub>
-    </td>
-  </tr>
-</table>
-
-### Acknowledgements
-
-- **Gaurang Singhal** — Model training & dataset curation ([RecruitView dataset](https://huggingface.co/datasets/AI4A-lab/RecruitView))
-- **Google MediaPipe** — Real-time face landmark detection
-- **Convex** — Serverless real-time database
-- **Clerk** — Authentication infrastructure
-
----
-
 <div align="center">
 
-**Built with ❤️ for smarter, fairer hiring.**
+⭐ **If you found this project interesting, consider giving it a star!** ⭐
+
+Built with ❤️ using Next.js, PyTorch & MediaPipe
 
 </div>
