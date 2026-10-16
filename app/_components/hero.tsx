@@ -2,7 +2,8 @@
 import React from 'react'
 import { motion } from "motion/react";
 import { Button } from '@/components/ui/button'
-import Link from "next/link"
+import Link from "next/link";
+import { SignedIn, SignedOut } from "@clerk/nextjs";
 function HERO() {
   return (
     <div className="relative mx-auto my-10 flex max-w-7xl flex-col items-center justify-center">
@@ -63,11 +64,20 @@ function HERO() {
           }}
           className="relative z-10 mt-8 flex flex-wrap items-center justify-center gap-4"
         >
-          <Link href={"/sign-in"}>
-          <Button>
-            Explore Now
-          </Button>
-          </Link>
+          <SignedIn>
+            <Link href="/dashboard">
+              <Button>
+                Go to Dashboard
+              </Button>
+            </Link>
+          </SignedIn>
+          <SignedOut>
+            <Link href="/sign-in">
+              <Button>
+                Explore Now
+              </Button>
+            </Link>
+          </SignedOut>
           <button className="w-60 transform rounded-lg border border-gray-300 bg-white px-6 py-2 font-medium text-black transition-all duration-300 hover:-translate-y-0.5 hover:bg-gray-100 dark:border-gray-700 dark:bg-black dark:text-white dark:hover:bg-gray-900">
             Contact Support
           </button>

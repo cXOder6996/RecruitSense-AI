@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
 const Header = () => {
   return (
@@ -19,11 +20,24 @@ const Header = () => {
         </div>
       </Link>
 
-      <Link href="/sign-in">
-        <Button className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs py-2 px-4 rounded-xl shadow-sm">
-          Sign In
-        </Button>
-      </Link>
+      <div className="flex items-center gap-4">
+        <SignedIn>
+          <Link href="/dashboard">
+            <Button className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs py-2 px-4 rounded-xl shadow-sm">
+              Dashboard
+            </Button>
+          </Link>
+          <UserButton afterSignOutUrl="/" />
+        </SignedIn>
+
+        <SignedOut>
+          <Link href="/sign-in">
+            <Button className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs py-2 px-4 rounded-xl shadow-sm">
+              Sign In
+            </Button>
+          </Link>
+        </SignedOut>
+      </div>
     </nav>
   );
 };
