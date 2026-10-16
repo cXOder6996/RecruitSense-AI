@@ -2,11 +2,31 @@ import { NextRequest, NextResponse } from "next/server";
 import Imagekit from "imagekit";
 import axios from "axios";
 
-const imageKit = new Imagekit({
-  publicKey: process.env.IMAGEKIT_URL_PUBLIC_KEY || "",
-  privateKey: process.env.IMAGEKIT_URL_PRIVATE_KEY || "",
-  urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT || "",
-});
+function getImageKitClient(): Imagekit | null {
+  const publicKey =
+    process.env.IMAGEKIT_URL_PUBLIC_KEY ||
+    process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY ||
+    "";
+  const privateKey =
+    process.env.IMAGEKIT_URL_PRIVATE_KEY ||
+    process.env.IMAGEKIT_PRIVATE_KEY ||
+    "";
+  const urlEndpoint =
+    process.env.IMAGEKIT_URL_ENDPOINT ||
+    process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT ||
+    "";
+
+  if (!publicKey || !privateKey || !urlEndpoint) {
+    return null;
+  }
+
+  try {
+    return new Imagekit({ publicKey, privateKey, urlEndpoint });
+  } catch (err) {
+    console.warn("ImageKit initialization error:", err);
+    return null;
+  }
+}
 
 /**
  * Parses n8n response structures, prioritizing raw.output JSON strings
@@ -101,16 +121,22 @@ export async function POST(request: NextRequest) {
     // 1. Handle File Upload (ImageKit)
     if (file && file.size > 0) {
       try {
-        const arrayBuffer = await file.arrayBuffer();
-        const buffer = Buffer.from(arrayBuffer);
+        const client = getImageKitClient();
+        if (client) {
+          const arrayBuffer = await file.arrayBuffer();
+          const buffer = Buffer.from(arrayBuffer);
 
-        const uploadResponse = await imageKit.upload({
-          file: buffer,
-          fileName: `resume-${Date.now()}-${file.name || "document.pdf"}`,
-          isPrivateFile: false,
-          useUniqueFileName: true,
-        });
-        resumeUrl = uploadResponse?.url || "";
+          const uploadResponse = await client.upload({
+            file: buffer,
+            fileName: `resume-${Date.now()}-${file.name || "document.pdf"}`,
+            isPrivateFile: false,
+            useUniqueFileName: true,
+          });
+          resumeUrl = uploadResponse?.url || "";
+        } else {
+          console.log("ImageKit credentials not provided; using fallback URL.");
+          resumeUrl = "https://ik.imagekit.io/placeholder/sample-resume.pdf";
+        }
       } catch (uploadError) {
         console.warn("ImageKit upload failed, proceeding with fallback URL:", uploadError);
         resumeUrl = "https://ik.imagekit.io/placeholder/sample-resume.pdf";
